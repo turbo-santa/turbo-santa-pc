@@ -19,8 +19,11 @@ public class TurboSanta {
 	}
 	
 	public void launch() {
+		System.out.println("Launching!");
+		/* TODO: Uncomment this once the emulator functions
 		EmulatorHandler.init(rom);
 		EmulatorHandler.launch();
+		*/
 	}
 	
 	public static void main(String[] args) {
