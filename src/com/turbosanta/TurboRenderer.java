@@ -1,43 +1,28 @@
 package com.turbosanta;
 
 import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 public class TurboRenderer {
-	private JFrame frame;
-	private BufferedImage image;
+	private final JFrame frame;
 	private int width;
 	private int height;
-
-	public void setup(JFrame renderTarget, int width, int height) {
+	private RenderThread renderThread;
+	
+	public TurboRenderer(JFrame renderTarget, int width, int height) {
 		frame = renderTarget;
 		this.width = width;
 		this.height = height;
+		renderThread = new RenderThread();
 	}
 
-	// TODO: make this a background task
 	public void submitForRender(int[][] bitmap) {
-		render(convertBitmap(bitmap), bitmap.length);
+		renderThread.render(convertBitmap(bitmap), bitmap.length);
 	}
 	
-	// TODO: ask cameron how jank this is
-	private void render(int[] bitmap, int scanSize) {
-		frame.createBufferStrategy(1);
-		BufferStrategy strategy = frame.getBufferStrategy();
-		image.setRGB(0, 0, width, height, bitmap, 0, scanSize);
-		do {
-			do {
-				Graphics g = strategy.getDrawGraphics();
-				g.drawImage(image, 0, 0, width, height, 0, 0, width, height, null);
-				g.dispose();
-			} while (strategy.contentsRestored());
-			strategy.show();
-		} while (strategy.contentsLost());
-	}
-
 	private int[] convertBitmap(int[][] bitMap) {
 		int[] newBitmap = new int[bitMap.length * bitMap[0].length];
 		for (int j = 0; j < bitMap[0].length; j++) {
@@ -46,5 +31,34 @@ public class TurboRenderer {
 			}
 		}
 		return newBitmap;
+	}
+	
+	private class RenderThread extends Thread {
+		private int[] bitmap;
+		private int scanSize;
+		private BufferedImage image;
+		
+		private RenderThread() {
+			image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+		}
+		
+		private void render(int[] bitmap, int scanSize) {
+			this.bitmap = bitmap;
+			this.scanSize = scanSize;
+			super.start();
+		}
+		
+		@Override
+		public void run() {
+			image.setRGB(0, 0, width, height, bitmap, 0, scanSize);
+			Graphics g = frame.getGraphics();
+			g.drawImage(image, 0, 0, width, height, 0, 0, width, height, null);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					frame.repaint();					
+				}
+			});
+		}
 	}
 }

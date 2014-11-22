@@ -44,5 +44,4 @@ public class ROMReader {
 		return returnVal == JFileChooser.APPROVE_OPTION ?
 			 chooser.getSelectedFile().getAbsolutePath() : null;
 	}
-
 }

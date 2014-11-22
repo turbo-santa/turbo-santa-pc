@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import com.turbosanta.ROMReader;
@@ -21,6 +22,7 @@ public class MainFrame extends JFrame {
 	private TurboSanta turbo;
 	
 	public MainFrame(TurboSanta turbo) {
+		super("Turbo Santa");
 		this.turbo = turbo;
 	}
 	
@@ -28,8 +30,8 @@ public class MainFrame extends JFrame {
 		setSize(width, height);
 		JButton chooseROM = new JButton("Select ROM");
 		JButton launchGame = new JButton("Launch Game");
-		launchGame.setEnabled(false);
 		
+		launchGame.setEnabled(false);
 		launchGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -54,9 +56,9 @@ public class MainFrame extends JFrame {
 		
 		Box buttonBox = Box.createVerticalBox();
 		buttonBox.add(Box.createVerticalStrut(20));
-		buttonBox.add(chooseROM);
+		buttonBox.add(centerWrapper(chooseROM));
 		buttonBox.add(Box.createVerticalStrut(10));
-		buttonBox.add(launchGame);
+		buttonBox.add(centerWrapper(launchGame));
 		buttonBox.add(Box.createVerticalGlue());
 		Box wrapperBox = Box.createHorizontalBox();
 		wrapperBox.add(Box.createHorizontalGlue());
@@ -66,6 +68,14 @@ public class MainFrame extends JFrame {
 		
 		addKeyListener(new KeyboardHandler());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	private Box centerWrapper(JComponent comp) {
+		Box centerBox = Box.createHorizontalBox();
+		centerBox.add(Box.createHorizontalGlue());
+		centerBox.add(comp);
+		centerBox.add(Box.createHorizontalGlue());
+		return centerBox;
 	}
 	
 }
