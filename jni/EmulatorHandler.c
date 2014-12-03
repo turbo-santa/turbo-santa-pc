@@ -1,11 +1,11 @@
-#include <jni.h>
-
 #ifndef TURBO_SANTA_PC_EMULATOR_HANDLER_H_
 #define TURBO_SANTA_PC_EMULATOR_HANDLER_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <jni.h>
 
 static jclass emulatorHandlerClass;
 static jmethodID jgraphicsCallback;

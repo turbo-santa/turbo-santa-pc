@@ -2,6 +2,7 @@ package com.turbosanta;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -51,6 +52,8 @@ public class TurboRenderer {
 		@Override
 		public void run() {
 			image.setRGB(0, 0, width, height, bitmap, 0, scanSize);
+			WritableRaster raster = image.getRaster();
+			raster.setPixels(0, 0, width, height, bitmap);
 			Graphics g = frame.getGraphics();
 			g.drawImage(image, 0, 0, width, height, 0, 0, width, height, null);
 			SwingUtilities.invokeLater(new Runnable() {
