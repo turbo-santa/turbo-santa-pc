@@ -30,6 +30,14 @@ JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_launch
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_handleInput
   (JNIEnv *env, jclass, jbyte inputMap);
 
+/*
+ * Class:     com_turbosanta_EmulatorHandler
+ * Method:    stop
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_stop
+  (JNIEnv *env, jclass);
+
 #ifdef __cplusplus
 }
 #endif

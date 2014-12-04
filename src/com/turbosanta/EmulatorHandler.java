@@ -10,6 +10,7 @@ public class EmulatorHandler {
 	public static native void init(byte[] rom);
 	public static native void launch();
 	public static native void handleInput(byte keyMap);
+	public static native void stop();
 	
 	public static void graphicsCallback(byte[] bitMapBytes, int length) {
 		Integer[] bitmap = new Integer[length];

@@ -29,9 +29,6 @@ void videoCallback(const signed char* bitmap, int length) {
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_init(JNIEnv *env, jclass, jbyteArray romBytes) {
 	fprintf(stderr, "NATIVE: init\n");
 
-	env->GetJavaVM(&jvm); // store the jvm for use later (this is safe)
-	emulatorHandlerClass = env->FindClass("com/turbosanta/EmulatorHandler");
-	jgraphicsCallback = env->GetStaticMethodID(emulatorHandlerClass, "graphicsCallback", "([BI)V");
 	jboolean isCopy;
 	jbyte* rom = env->GetByteArrayElements(romBytes, &isCopy);
 
@@ -47,6 +44,10 @@ JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_launch(JNIEnv *env, j
 	turbo->launch();
 }
 
+JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_stop (JNIEnv *env, jclass) {
+	turbo->stop();
+}
+
 /*
  * Class:     com_turbosanta_EmulatorHandler
  * Method:    handleInput
@@ -54,4 +55,15 @@ JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_launch(JNIEnv *env, j
  */
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_handleInput(JNIEnv *env, jclass, jbyte inputMap) {
 
+}
+
+// This is called when the library is first loaded
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *pjvm, void *reserved) {
+	jvm = pjvm;  // store the jvm for use later (this is safe)
+	JNIEnv *env;
+	jvm->AttachCurrentThread((void**)&env, NULL);
+	emulatorHandlerClass = env->FindClass("com/turbosanta/EmulatorHandler");
+	jgraphicsCallback = env->GetStaticMethodID(emulatorHandlerClass, "graphicsCallback", "([BI)V");
+
+	return JNI_VERSION_1_8;
 }
