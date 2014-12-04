@@ -1,14 +1,22 @@
 package com.turbosanta;
 
+import com.turbosanta.gui.GameFrame;
 import com.turbosanta.gui.MainFrame;
 
 public class TurboSanta {
-	private byte[] rom;
+	private static final int WIDTH = 160;
+	private static final int HEIGHT = 144;
 	
+	private byte[] rom;
+	private TurboRenderer renderer;
+	private MainFrame main;
+	private GameFrame gameFrame;
 	public TurboSanta() {
-		MainFrame main = new MainFrame(this);
+		main = new MainFrame(this);
 		main.build();
 		main.setVisible(true);
+		gameFrame = new GameFrame();
+		renderer = new TurboRenderer(gameFrame, WIDTH, HEIGHT);
 	}
 	
 	public void setRom(Byte[] rom) {
@@ -19,8 +27,12 @@ public class TurboSanta {
 	}
 	
 	public void launch() {
-		System.out.println("Launching!");
+		System.out.println("Initializing");
 		EmulatorHandler.init(rom);
+		EmulatorHandler.registerRenderer(renderer);
+		System.out.println("Launching!");
+		main.setVisible(false);
+		gameFrame.setVisible(true);
 		EmulatorHandler.launch();
 	}
 	

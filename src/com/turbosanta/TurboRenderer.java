@@ -3,65 +3,67 @@ package com.turbosanta;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 public class TurboRenderer {
 	private final JFrame frame;
 	private int width;
 	private int height;
 	private RenderThread renderThread;
-	
+
 	public TurboRenderer(JFrame renderTarget, int width, int height) {
 		frame = renderTarget;
 		this.width = width;
 		this.height = height;
 		renderThread = new RenderThread();
+		renderThread.start();
 	}
 
-	public void submitForRender(int[][] bitmap) {
-		renderThread.render(convertBitmap(bitmap), bitmap.length);
+	public void submitForRender(Integer[] bitmap) {
+		renderThread.render(bitmap, bitmap.length);
 	}
-	
-	private int[] convertBitmap(int[][] bitMap) {
-		int[] newBitmap = new int[bitMap.length * bitMap[0].length];
-		for (int j = 0; j < bitMap[0].length; j++) {
-			for (int i = 0; i < bitMap.length; i++) {
-				newBitmap[bitMap.length * j + i] = bitMap[j][i];
-			}
-		}
-		return newBitmap;
-	}
-	
+
 	private class RenderThread extends Thread {
-		private int[] bitmap;
-		private int scanSize;
 		private BufferedImage image;
-		
+		private SynchronousQueue<Integer[]> frameQueue;
 		private RenderThread() {
 			image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+			frameQueue = new SynchronousQueue<Integer[]>();
 		}
-		
-		private void render(int[] bitmap, int scanSize) {
-			this.bitmap = bitmap;
-			this.scanSize = scanSize;
-			super.start();
+
+		private void render(Integer[] bitmap, int scanSize) {
+			if (bitmap != null) {
+				try {
+					frameQueue.put(bitmap);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		
+
 		@Override
 		public void run() {
-			image.setRGB(0, 0, width, height, bitmap, 0, scanSize);
-			WritableRaster raster = image.getRaster();
-			raster.setPixels(0, 0, width, height, bitmap);
-			Graphics g = frame.getGraphics();
-			g.drawImage(image, 0, 0, width, height, 0, 0, width, height, null);
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					frame.repaint();					
+			System.out.println("RenderThread Spinning up");
+			while (true) {
+				Integer[] bitmap = null;
+				try {
+					bitmap = frameQueue.take();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-			});
+				if (bitmap != null) {
+					for (int y = 0; y < height; y++) {
+						for (int x = 0; x < width; x++) {
+							image.setRGB(x, y, bitmap[x+y*width]);
+						}
+					}
+
+					Graphics g = frame.getGraphics();
+					g.drawImage(image, 0, 0, frame.getWidth(), frame.getHeight(), 0, 0, width, height, null);
+				}
+			}
 		}
 	}
 }

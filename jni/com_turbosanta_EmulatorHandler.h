@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ([B)V
  */
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_init
-  (JNIEnv *, jclass, jbyteArray);
+  (JNIEnv *env, jclass, jbyteArray romBytes);
 
 /*
  * Class:     com_turbosanta_EmulatorHandler
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_init
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_launch
-  (JNIEnv *, jclass);
+  (JNIEnv *env, jclass);
 
 /*
  * Class:     com_turbosanta_EmulatorHandler
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_launch
  * Signature: (B)V
  */
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_handleInput
-  (JNIEnv *, jclass, jbyte);
+  (JNIEnv *env, jclass, jbyte inputMap);
 
 #ifdef __cplusplus
 }
