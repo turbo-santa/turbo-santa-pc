@@ -1,4 +1,4 @@
-#include "com_turbosanta_EmulatorHandler.h"
+#include "EmulatorHandler.h"
 #include "TurboSanta.h"
 
 static jclass emulatorHandlerClass;
