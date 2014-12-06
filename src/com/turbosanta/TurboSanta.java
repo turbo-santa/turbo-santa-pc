@@ -19,11 +19,8 @@ public class TurboSanta {
 		renderer = new TurboRenderer(gameFrame, WIDTH, HEIGHT);
 	}
 
-	public void setRom(Byte[] rom) {
-		this.rom = new byte[rom.length];
-		for (int i = 0; i < rom.length; i++) {
-			this.rom[i] = rom[i];
-		}
+	public void setRom(byte[] rom) {
+		this.rom = rom;
 	}
 
 	public void launch() {

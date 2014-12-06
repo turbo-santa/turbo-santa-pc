@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Catch errors here
-				Byte[] rom = ROMReader.readRom((String)romSelector.getSelectedItem());
+				byte[] rom = ROMReader.readRom((String)romSelector.getSelectedItem());
 				turbo.setRom(rom);
 				turbo.launch();
 			}
@@ -57,6 +57,7 @@ public class MainFrame extends JFrame {
 			launchGame.setEnabled(false);
 		} else {
 			launchGame.setEnabled(true);
+			launchGame.requestFocusInWindow();
 		}
 		
 		JPanel mainPanel = new JPanel();

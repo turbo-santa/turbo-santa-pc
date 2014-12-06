@@ -29,10 +29,11 @@ void videoCallback(const signed char* bitmap, int length) {
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_init(JNIEnv *env, jclass, jbyteArray romBytes) {
 	fprintf(stderr, "NATIVE: init\n");
 
-	jboolean isCopy;
-	jbyte* rom = env->GetByteArrayElements(romBytes, &isCopy);
+	int length = env->GetArrayLength(romBytes);
+	unsigned char* rom = new unsigned char[length];
+	env->GetByteArrayRegion(romBytes, 0, length, reinterpret_cast<jbyte*>(rom));
 
-	turbo->init((unsigned char*)rom, env->GetArrayLength(romBytes), &videoCallback);
+	turbo->init(rom, length, &videoCallback);
 }
 
 /*
