@@ -2,6 +2,7 @@ package com.turbosanta;
 
 import com.turbosanta.gui.GameFrame;
 import com.turbosanta.gui.MainFrame;
+import com.turbosanta.input.KeyboardHandler;
 
 public class TurboSanta {
 	private static final int WIDTH = 160;
@@ -30,6 +31,7 @@ public class TurboSanta {
 		System.out.println("Launching!");
 		main.setVisible(false);
 		gameFrame.setVisible(true);
+		gameFrame.addKeyListener(new KeyboardHandler());
 		EmulatorHandler.launch();
 	}
 

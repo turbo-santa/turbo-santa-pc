@@ -11,15 +11,19 @@ public class KeyboardHandler implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		byte binding = KeyBindings.getBinding(e);
-		keyMap |= binding;
-		EmulatorHandler.handleInput(keyMap);
+		if (binding != 0) {
+			keyMap |= binding;
+			EmulatorHandler.handleInput(keyMap);
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		byte binding = KeyBindings.getBinding(e);
-		keyMap &= ~(binding);
-		EmulatorHandler.handleInput(keyMap);
+		if (binding != 0) {
+			keyMap &= ~(binding);
+			EmulatorHandler.handleInput(keyMap);
+		}
 	}
 	
 	// Unused

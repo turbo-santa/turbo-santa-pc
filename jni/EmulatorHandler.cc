@@ -55,7 +55,7 @@ JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_stop (JNIEnv *env, jc
  * Signature: (B)V
  */
 JNIEXPORT void JNICALL Java_com_turbosanta_EmulatorHandler_handleInput(JNIEnv *env, jclass, jbyte inputMap) {
-
+	turbo->handleInput((unsigned char)inputMap);
 }
 
 // This is called when the library is first loaded

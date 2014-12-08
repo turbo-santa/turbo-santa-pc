@@ -28,7 +28,7 @@ public class TurboRenderer {
 		private BufferedImage image;
 		private SynchronousQueue<Integer[]> frameQueue;
 		private RenderThread() {
-			image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+			image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
 			frameQueue = new SynchronousQueue<Integer[]>();
 		}
 

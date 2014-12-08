@@ -15,7 +15,7 @@ public class EmulatorHandler {
 	public static void graphicsCallback(byte[] bitMapBytes, int length) {
 		Integer[] bitmap = new Integer[length];
 		for (int i = 0; i < length; i++) {
-			bitmap[i] = ((int)~bitMapBytes[i] + 1) << 16 | ((int)~bitMapBytes[i] + 1) << 8 | ((int)~bitMapBytes[i]);
+			bitmap[i] = (int)~bitMapBytes[i] + 1 << 24 | ((int)~bitMapBytes[i] + 1) << 16 | ((int)~bitMapBytes[i]) << 8;
 		}
 		renderer.submitForRender(bitmap);
 	}

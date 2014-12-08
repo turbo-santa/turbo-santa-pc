@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class KeyBindings {
-	public final static byte RIGHT = 0x01;
-	public final static byte LEFT = 0x02;
-	public final static byte UP = 0x04;
-	public final static byte DOWN = 0x08;
-	public final static byte A = 0x10;
-	public final static byte B = 0x20;
-	public final static byte SELECT = 0x40;
-	public final static byte START = (byte) 0x80;
+	public final static byte RIGHT = (byte)0b00010000;
+	public final static byte LEFT = (byte)0b00100000;
+	public final static byte UP = (byte)0b01000000;
+	public final static byte DOWN = (byte)0b10000000;
+	public final static byte A = (byte)0b00000001;
+	public final static byte B = (byte)0b00000010;
+	public final static byte SELECT = (byte)0b00000100;
+	public final static byte START = (byte)0b00001000;
 	
-	private static HashMap<Integer, Byte> keyMap = new HashMap<Integer, Byte>();
+	private static HashMap<Integer, Byte> keyMap = getDefaultMapping();
 	
 	public static void setBinding(Integer keyCode, byte keyBinding) {
 		// ensure bindings are 1:1
