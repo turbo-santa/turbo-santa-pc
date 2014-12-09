@@ -10,7 +10,7 @@ public class GameFrame extends JFrame {
 	public GameFrame() {
 		super("Turbo Santa");
 		setBackground(Color.WHITE);
-		setSize(160, 144);
+		setSize(160 * 3, 144 * 3);
 	}
 	
 }

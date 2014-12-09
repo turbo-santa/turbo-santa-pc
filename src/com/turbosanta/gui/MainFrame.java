@@ -1,7 +1,9 @@
 package com.turbosanta.gui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -27,7 +29,7 @@ public class MainFrame extends JFrame {
 	private final int height = 400;
 	private final Preferences preferences = PreferencesManager.getPreferences();
 	private final JButton launchGame = new JButton("Launch Game");
-	private final JComboBox<String> romSelector = new JComboBox<String>();
+	private final JComboBox<RomFile> romSelector = new JComboBox<RomFile>();
 	private String fileName;
 	private TurboSanta turbo;
 	
@@ -43,14 +45,16 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Catch errors here
-				byte[] rom = ROMReader.readRom((String)romSelector.getSelectedItem());
+				byte[] rom = ROMReader.readRom(((RomFile)romSelector.getSelectedItem()).value);
 				turbo.setRom(rom);
 				turbo.launch();
 			}
 		});
 		
+		romSelector.setPreferredSize(new Dimension((int)(this.getWidth() * 0.8), 
+				romSelector.getHeight()));
 		for (String rom : preferences.getRomFiles()) {
-			romSelector.addItem(rom);
+			romSelector.addItem(new RomFile(rom));
 		}
 		
 		if (preferences.getRomFiles().isEmpty()) {
@@ -143,8 +147,9 @@ public class MainFrame extends JFrame {
 				if (fileName != null) {
 					launchGame.setEnabled(true);
 					preferences.addRomFile(fileName);
-					romSelector.addItem(fileName);
-					romSelector.setSelectedItem(fileName);;
+					RomFile newRom = new RomFile(fileName);
+					romSelector.addItem(newRom);
+					romSelector.setSelectedItem(newRom);;
 				}
 			}
 		});
@@ -160,5 +165,21 @@ public class MainFrame extends JFrame {
 		});
 
 		return fileMenu;
+	}
+	
+	private class RomFile {
+		private String value;
+		private String label;
+		
+		private RomFile(String fileName) {
+			value = fileName;
+			label = new File(fileName).getName();
+		}
+		
+		@Override
+		public String toString() {
+			return label;
+		}
+		
 	}
 }
