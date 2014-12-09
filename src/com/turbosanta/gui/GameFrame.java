@@ -11,6 +11,7 @@ public class GameFrame extends JFrame {
 		super("Turbo Santa");
 		setBackground(Color.WHITE);
 		setSize(160 * 3, 144 * 3);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 }
